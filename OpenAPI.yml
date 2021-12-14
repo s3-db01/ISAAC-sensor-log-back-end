@@ -1,0 +1,233 @@
+openapi: '3.0.0'
+info:
+  title: API Title
+  version: '1.0'
+servers:
+  - url: localhost:3002/api
+
+paths:
+  /sensorlogs/{id}:
+    get:
+      summary: Get SensorLog
+      description: Gets a SensorLog by supplierd ID in the URL.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+            example: 1
+            minimum: 1
+          required: true
+          description: Numeric ID of the SensorLog to get.
+      responses:
+        '200':
+          description: Successfull GET response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SensorLog'
+        '404':
+          $ref: '#/components/responses/NotFound'
+          
+        '5XX':
+            $ref: '#/components/responses/ServerError'
+
+    put:
+      summary: Update SensorLog
+      description: Updates a sensorlog by sensorlog ID in the URL.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+          example: 1
+          minimum: 1
+        required: true
+        description: Numeric ID of the sensorlog to update.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SensorLog'
+      responses:
+        '200':
+          description: Successfull PUT response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '400':
+          $ref: '#/components/responses/InvalidRequest'
+
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+        '5XX':
+          $ref: '#/components/responses/ServerError'
+
+    delete:
+      summary: Delete SensorLog
+      description: Deletes a sensorlog by sensorlog ID in ther URL.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+          example: 1
+          minimum: 1
+        required: true
+        description: Numeric ID of the sensorlog to delete.
+      responses:
+        '200':
+          description: Successfull DELETE response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '5XX':
+          $ref: '#/components/responses/ServerError'
+
+  /sensorlogs:
+    get:
+      summary: Get sensorlogs list.
+      description: Get all the sensorlogs in a list.
+      responses:
+        '200':
+          description: Successfull GET response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SensorLogs'
+
+        '5XX':
+          $ref: '#/components/responses/ServerError'
+
+    post:
+      summary: Create SensorLog
+      description: Creates a sensorlog with the parameters specified in the request body.
+      requestBody:
+        description: This is the sensorlog object.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: '#/components/schemas/SensorLog'
+
+      responses:
+        '201':
+          description: Successfull POST response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SensorLog'
+                type: object
+
+        '400':
+          $ref: '#/components/responses/InvalidRequest'
+
+        '5XX':
+          $ref: '#/components/responses/ServerError'
+    
+    delete:
+      summary: Delete all SensorLogs
+      description: Deletes all the sensorlogs in the database, there is no undoing this action.
+      responses:
+        '200':
+          description: Successfull DELETE response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+        '5XX':
+          $ref: '#/components/responses/ServerError'
+
+components:
+  schemas: 
+    SensorLogs:
+      description: Array of SensorLogs information
+      type: array
+      items:
+        $ref: '#/components/schemas/SensorLog'
+
+    SensorLog:
+      description: Model containing SensorLog information
+      title: SensorLog
+      required:
+        - sensor_id
+        - humidity
+        - temperature
+        - up_time
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        
+        sensor_id:
+          type: string
+          example: 5-10
+        
+        humidity:
+          type: number
+          example: 50.2
+        
+        temperature:
+          type: number
+          example: 21.5
+
+        up_time:
+          type: string
+          example: 2021-11-17T13:13:56.000Z
+          
+        createdAt:
+          type: string
+          example: 2021-11-17T13:13:56.000Z
+
+        updatedAt:
+          type: string
+          example: 2021-11-17T13:13:56.000Z
+
+  responses:
+    NotFound:
+      description: The resource was not found with the given ID.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:   
+              message:
+                type: string
+    
+    ServerError:
+      description: The server encountered an error.
+      content: 
+        application/json:
+          schema:
+            type: object
+            properties:   
+              message:
+                type: string
+
+    InvalidRequest:
+      description: The request is not valid.
+      content: 
+        application/json:
+          schema:
+            type: object
+            properties:   
+              message:
+                type: string

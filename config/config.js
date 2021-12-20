@@ -21,7 +21,7 @@ module.exports = {
     password: "isaac",
     database: "isaac",
     host:"localhost",
-    port: "3307",
+    port: "3308",
     dialect: "mysql",
   },
     "production": {

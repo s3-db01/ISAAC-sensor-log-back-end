@@ -30,7 +30,9 @@
   "devDependencies": {
     "cross-env": "^7.0.3",
     "dotenv": "^10.0.0",
+    "jest": "^27.4.5",
     "nodemon": "^2.0.15",
-    "sequelize-cli": "^6.3.0"
+    "sequelize-cli": "^6.3.0",
+    "supertest": "^6.1.6"
   }
 }

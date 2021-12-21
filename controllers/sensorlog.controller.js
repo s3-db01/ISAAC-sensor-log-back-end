@@ -51,11 +51,13 @@ exports.findAll = (req, res) => {
 
 // Find all Sensor logs with an id of the X and Y coordinates
 exports.findOne = (req, res) => {
-    const id = req.params.id;
+    const sensor_id = req.body.x_coordinate + "-" + req.body.y_coordinate
+
+    //console.log(sensor_id);
 
     Sensorlog.findAll({
         where: {
-            sensor_id: id
+            sensor_id: sensor_id
         }
     })
         .then(data => {
@@ -78,12 +80,19 @@ exports.findOne = (req, res) => {
 exports.update = (req, res) => {
     const id = req.params.id;
 
+    console.log(id)
+
 
     Sensorlog.update(
         {
+            humidity: req.body.humidity,
+            temperature: req.body.temperature,
+            up_time: req.body.up_time
+        },
+        {
             where: {
-                sensor_id: id
-        }
+                id: id              
+            }
     })
     .then(num => {
         console.log(num)

@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    await queryInterface.createTable('SensorLogs', {
+    return queryInterface.createTable('SensorLogs', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -18,7 +18,7 @@ module.exports = {
         type: Sequelize.DOUBLE
       },
       up_time: {
-        type: Sequelize.DATE
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
@@ -30,7 +30,7 @@ module.exports = {
       }
     });
   },
-  down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('SensorLogs');
+  down: (queryInterface, Sequelize) => {
+    return queryInterface.dropTable('SensorLogs');
   }
 };

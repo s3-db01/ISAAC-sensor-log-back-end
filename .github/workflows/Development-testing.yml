@@ -6,9 +6,9 @@ name: Test code for Development
 on:
   # Triggers the workflow on push or pull request events but only for the development branch
   push:
-    branches: [ Development ]
+    branches: [ development ]
   pull_request:
-    branches: [ Development ]
+    branches: [ development ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:

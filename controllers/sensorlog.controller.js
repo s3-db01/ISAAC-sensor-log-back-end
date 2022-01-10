@@ -49,6 +49,34 @@ exports.findAll = (req, res) => {
         });
 };
 
+// Retrieve all Sensorlogs from the database
+exports.findAllWithID = (req, res) => {
+
+    const sensor_id = req.params.id;
+
+    Sensorlog.findAll({
+        where: {
+            sensor_id: sensor_id
+        }
+    })
+        .then(data => {
+            if (data) {
+                res.send(data);
+            } else {
+                res.status(404).send({
+                    message: `Cannot find Sensor log with id=${id}.`
+                });
+            }
+        })
+        .catch(err => {
+            res.status(500).send({
+                message:
+                    err.message || "Some error occurred while retrieving sensor logs."
+            });
+        });
+};
+
+
 // Find all Sensor logs with an id of the X and Y coordinates
 exports.findOne = (req, res) => {
     const sensor_id = req.body.x_coordinate + "-" + req.body.y_coordinate

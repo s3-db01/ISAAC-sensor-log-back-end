@@ -10,7 +10,7 @@ module.exports = app => {
     router.get("/", sensorlogs.findAll);
 
     // Retrieve a single Sensor with id
-    router.get("/:id/", sensorlogs.findOne);
+    router.get("/:id/", sensorlogs.findAllWithID);
 
     // Update a Sensor with id
     router.put("/:id/", sensorlogs.update);

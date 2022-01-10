@@ -54,7 +54,7 @@ exports.findAllWithID = (req, res) => {
 
     const sensor_id = req.params.id;
 
-    Sensorlog.findAll({
+    Sensorlog.findOne({
         where: {
             sensor_id: sensor_id
         }

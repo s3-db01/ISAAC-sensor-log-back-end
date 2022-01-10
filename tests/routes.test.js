@@ -25,9 +25,9 @@ describe('Post Endpoint', () => {
 })
 
 describe('Get Endpoint', () => {
-    it('Should get a sensorlogs with with id "1"', async () => {
+    it('Should get a sensorlogs with with id "4-6"', async () => {
         const res = await request(app)
-        .get('/api/sensorlogs/1')
+        .get('/api/sensorlogs/4-6')
         expect(res.statusCode).toEqual(200)
     })
     it('Should get all sensorlogs', async () => {

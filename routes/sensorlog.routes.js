@@ -12,6 +12,9 @@ module.exports = app => {
     // Retrieve a single Sensor with id
     router.get("/:id/", sensorlogs.findAllWithID);
 
+    // Retrieve a single Sensor with id and complete data
+    router.get("/complete/:id/", sensorlogs.findCompleteData);
+    
     // Update a Sensor with id
     router.put("/:id/", sensorlogs.update);
 

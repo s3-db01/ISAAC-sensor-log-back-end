@@ -90,6 +90,34 @@ exports.findCompleteData = (req, res) => {
         });
     });
 };
+exports.findAllCompleted = (req, res) => {
+    Sensorlog.findAll({
+        where: {
+            [Op.or]:[
+                { 
+                    humidity: {
+                        [Op.ne]: null
+                    },
+                    temperature: {
+                        [Op.ne]: null
+                    },
+                    up_time: {
+                        [Op.ne]: null
+                    }
+                }
+            ]    
+        }
+    })
+    .then(data => {
+        res.send(data);
+    })
+    .catch(err => {
+        res.status(500).send({
+            message:
+                err.message || "Some error occurred while retrieving sensor logs."
+        });
+    });
+};
 
 // Retrieve all Sensorlogs from the database
 exports.findAllWithID = (req, res) => {
@@ -151,7 +179,6 @@ exports.update = (req, res) => {
     const id = req.params.id;
 
     console.log("sensor_id= "+ id )
-
 
     Sensorlog.update(
         {

@@ -1,6 +1,8 @@
 const db = require('../models');
 const Sensorlog = db.sensorlogs;
 const { Op } = require("sequelize");
+//import {startOfWeek, endOfWeek} from 'date-fns';
+const dateFns = require("date-fns");
 
 //  Create and save SensorLog
 exports.create = (req, res) => {
@@ -109,6 +111,62 @@ exports.findAllCompleted = (req, res) => {
         }
     })
     .then(data => {
+        let count = 0;
+        data.forEach(sensorlog =>{
+            const coordinates = sensorlog.sensor_id.split('-')
+            data[count].dataValues.x = coordinates[0]
+            data[count].dataValues.y = coordinates[1]
+            count++
+        })
+        console.log(data)
+        res.send(data);
+    })
+    .catch(err => {
+        res.status(500).send({
+            message:
+                err.message || "Some error occurred while retrieving sensor logs."
+        });
+    });
+};
+
+exports.findAllCompletedWeekly = (req, res) => {
+    date = new Date()
+    const firstDay = dateFns.startOfWeek(date, {weekStartsOn: 1});
+    const lastDay = dateFns.endOfWeek(date, {weekStartsOn: 1});
+    Sensorlog.findAll({
+        where: {
+            "updatedAt":{
+
+                [Op.and]:{
+                    [Op.gte]: firstDay,
+                    [Op.lte]: lastDay
+                }
+            },
+
+            [Op.or]:[
+                { 
+                    humidity: {
+                        [Op.ne]: null
+                    },
+                    temperature: {
+                        [Op.ne]: null
+                    },
+                    up_time: {
+                        [Op.ne]: null
+                    }
+                }
+            ]    
+        }
+    })
+    .then(data => {
+        let count = 0;
+        data.forEach(sensorlog =>{
+            const coordinates = sensorlog.sensor_id.split('-')
+            data[count].dataValues.x = coordinates[0]
+            data[count].dataValues.y = coordinates[1]
+            count++
+        })
+        console.log(data)
         res.send(data);
     })
     .catch(err => {

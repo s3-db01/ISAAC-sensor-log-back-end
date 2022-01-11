@@ -12,6 +12,9 @@ module.exports = app => {
     // Retrieve all Sensor
     router.get("/complete", sensorlogs.findAllCompleted);
 
+    // Retrieve all Sensor
+    router.get("/complete/weekly", sensorlogs.findAllCompletedWeekly);
+
     // Retrieve a single Sensor with id
     router.get("/:id/", sensorlogs.findAllWithID);
 
@@ -27,5 +30,5 @@ module.exports = app => {
     // Delete all Sensors
     router.delete("/", sensorlogs.deleteAll);
 
-    app.use('/api/sensorlogs', router);
+    app.use('/api/sensorlogs', router); 
 };

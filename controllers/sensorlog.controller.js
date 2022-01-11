@@ -150,7 +150,7 @@ exports.findOne = (req, res) => {
 exports.update = (req, res) => {
     const id = req.params.id;
 
-    console.log(id)
+    console.log("sensor_id= "+ id )
 
 
     Sensorlog.update(
@@ -159,10 +159,13 @@ exports.update = (req, res) => {
             temperature: req.body.temperature,
             up_time: req.body.up_time
         },
+        
         {
+            limit: 1,
             where: {
-                id: id              
-            }
+                sensor_id: id              
+            },
+            order: [['createdAt', 'DESC']]
     })
     .then(num => {
         console.log(num)

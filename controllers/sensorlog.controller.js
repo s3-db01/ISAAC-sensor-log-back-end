@@ -1,5 +1,6 @@
 const db = require('../models');
 const Sensorlog = db.sensorlogs;
+const { Op } = require("sequelize");
 
 //  Create and save SensorLog
 exports.create = (req, res) => {
@@ -49,12 +50,53 @@ exports.findAll = (req, res) => {
         });
 };
 
+// Retrieve all Sensorlogs from the database with complete data
+exports.findCompleteData = (req, res) => {
+
+    const sensor_id = req.params.id;
+
+    Sensorlog.findAll({
+        where: {
+            sensor_id: sensor_id,
+
+            [Op.or]:[
+                { 
+                    humidity: {
+                        [Op.ne]: null
+                    },
+                    temperature: {
+                        [Op.ne]: null
+                    },
+                    up_time: {
+                        [Op.ne]: null
+                    }
+                }
+            ]    
+        }
+    })
+    .then(data => {
+        if (data) {
+            res.send(data);
+        } else {
+            res.status(404).send({
+                message: `Cannot find Sensor log with id=${id}.`
+            });
+        }
+    })
+    .catch(err => {
+        res.status(500).send({
+            message:
+                err.message || "Some error occurred while retrieving sensor logs."
+        });
+    });
+};
+
 // Retrieve all Sensorlogs from the database
 exports.findAllWithID = (req, res) => {
 
     const sensor_id = req.params.id;
 
-    Sensorlog.findOne({
+    Sensorlog.findAll({
         where: {
             sensor_id: sensor_id
         }
